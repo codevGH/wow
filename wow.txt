@@ -59,6 +59,11 @@ sudo    systemctl    restart    apache2
 Import->Root in Authorities->Bob in Servers
 Try https://bob-example.com
 
+sudo    cp    root.crt 	/usr/local/share/ca-certificates/rootca.crt
+sudo   update-ca-certificates
+openssl    s_client    -connect     cdac.ac.in:443     -showcerts
+
+
 
 
 
