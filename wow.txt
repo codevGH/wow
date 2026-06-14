@@ -1,0 +1,64 @@
+Website secure
+`````````````````
+
+sudo    apt    update
+sudo    apt    install    apache2
+sudo    systemctl    status    apache2
+sudo    ufw    allow    'Apache'
+sudo    a2enmod    ssl
+
+
+1)
+openssl genpkey -algorithm RSA -out /home/atul/testxca/root.key
+openssl req -x509 -new -nodes -key /home/atul/testxca/root.key -sha256 -days 3650 -out /home/atul/testxca/root.crt
+
+
+openssl genpkey -algorithm RSA -out /home/atul/testxca/bob.key
+openssl req -new -key /home/atul/testxca/bob.key -out /home/atul/testxca/bob.csr
+
+
+
+openssl x509 -req -in /home/atul/testxca/bob.csr -CA /home/atul/testxca/root.crt -CAkey /home/atul/testxca/root.key -CAcreateserial -out /home/atul/testxca/bob.crt -days 365 -sha256
+
+openssl x509 -req -in /home/atul/testxca/bob.csr -CA /home/atul/testxca/root.crt -CAkey /home/atul/testxca/root.key -CAcreateserial -out /home/atul/testxca/bob.crt -days 365 -sha256
+
+
+
+2)
+
+sudo vim /etc/apache2/sites-available/bob.conf
+
+
+<VirtualHost   *:443>
+    ServerName   bob.example.com
+    DocumentRoot   /var/www/bob
+    SSLEngine   on
+    SSLCertificateFile      /home/atul/testxca/bob.crt
+    SSLCertificateKeyFile   /home/atul/testxca/bob.key
+    SSLCACertificateFile    /home/atul/testxca/root.crt
+</VirtualHost>
+
+3)
+sudo   vim /etc/apache2/apache2.conf
+
+ServerName    bob.example.com
+
+4)
+sudo    mkdir    -p    /var/www/bob
+sudo    chown    -R    www-data:www-data    /var/www/bob
+
+5)
+sudo nano /etc/hosts
+
+127.0.0.1    bob.example.com
+
+sudo    a2ensite    bob.conf
+
+sudo    systemctl    restart    apache2
+
+Import->Root in Authorities->Bob in Servers
+Try https://bob-example.com
+
+
+
+
