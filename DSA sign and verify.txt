@@ -1,0 +1,16 @@
+DSA sign and verify
+````````````````````
+Generate DSA parameters
+openssl   dsaparam   -out   dsaparam.pem   2048
+
+Generate DSA private key
+openssl   gendsa   -out   private_dsa.pem   dsaparam.pem
+
+Extract public key
+openssl   dsa   -in  private_dsa.pem   -pubout   -out public_dsa.pem
+
+# Sign the message
+openssl   dgst   -sha256   -sign   private_dsa.pem   -out   signature.bin message.txt
+
+# Verify the signature
+openssl   dgst   -sha256   -verify   public_dsa.pem   -signature   signature.bin message.txt

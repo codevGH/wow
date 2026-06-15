@@ -1,0 +1,17 @@
+RSA sign and verify
+
+Generate private key file: 
+openssl   genpkey   -algorithm   RSA   -out   keyfile.pem  -aes256
+
+Derive public key from the private key: 
+openssl   rsa   -in 	keyfile.pem   -pubout   -out   public_key.pem
+
+Digital signature
+openssl   dgst   -sha256   -sign      keyfile.pem   -out    file1.txt.sha256.sig      file1.txt
+
+Verify signature
+openssl   dgst   -sha256   -verify   public_key.pem   -signature   file1.txt.sha256.sig file1.txt
+
+
+
+
