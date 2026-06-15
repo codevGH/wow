@@ -1,0 +1,31 @@
+for windows
+````````````
+# 1. Generate the SSH key pair
+ssh-keygen -t ed25519 -C "your_email@example.com"
+
+# 2. View your public key (Copy the text output of this command)
+type $env:USERPROFILE\.ssh\id_ed25519.pub
+
+# 3. Connect to your VM once everything is set up
+ssh username@vm_ip_address
+
+for Linux
+``````````
+
+# 1. Create the SSH directory
+mkdir -p ~/.ssh
+
+# 2. Set directory permissions
+chmod 700 ~/.ssh
+
+# 3. Open the authorized keys file (Paste your copied Windows key here, save, and exit)
+nano ~/.ssh/authorized_keys
+
+# 4. Set file permissions
+chmod 600 ~/.ssh/authorized_keys
+
+# 5. OPTIONAL: Open SSH config to disable password login
+sudo nano /etc/ssh/sshd_config
+
+# 6. OPTIONAL: Restart SSH service after changing config
+sudo systemctl restart ssh
